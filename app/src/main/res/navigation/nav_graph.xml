@@ -6,7 +6,7 @@
     app:startDestination="@id/movieListFragment">
     <fragment
         android:id="@+id/movieListFragment"
-        android:name="com.example.mvvmmovieapp.MovieListFragment"
+        android:name="com.example.mvvmmovieapp.ui.MovieListFragment"
         android:label="fragment_movie_list"
         tools:layout="@layout/fragment_movie_list" />
 </navigation>
