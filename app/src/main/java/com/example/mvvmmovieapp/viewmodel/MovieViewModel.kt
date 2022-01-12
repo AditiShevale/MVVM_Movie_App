@@ -5,13 +5,14 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.mvvmmovieapp.network.MovieApiService
+import com.example.mvvmmovieapp.network.MovieItemList
 import com.example.mvvmmovieapp.network.MovieList
 import com.example.mvvmmovieapp.network.MoviesApi
 import kotlinx.coroutines.launch
 
 class MovieViewModel() : ViewModel() {
-    private val _status = MutableLiveData<String>()
-    val status: LiveData<String> = _status
+    private val _status = MutableLiveData<MovieItemList>()
+    val status: LiveData<MovieItemList> = _status
 
     init {
         getMovieList()
@@ -22,9 +23,11 @@ class MovieViewModel() : ViewModel() {
             try {
 
                 val movieItemResult = MoviesApi.retrofitService.getMPopularMovies()
-                _status.value = movieItemResult.items[0].title
+                _status.value = movieItemResult
+
+
             } catch (e: Exception) {
-                _status.value = "Failure: ${e.message}"
+                //_status.value = "Failure: ${e.message}"
             }
         }
 

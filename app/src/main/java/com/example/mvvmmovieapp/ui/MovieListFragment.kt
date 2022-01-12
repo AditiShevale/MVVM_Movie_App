@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.LifecycleOwner
+import com.example.mvvmmovieapp.MovieListAdapter
 import com.example.mvvmmovieapp.R
 import com.example.mvvmmovieapp.databinding.FragmentMovieListBinding
 import com.example.mvvmmovieapp.viewmodel.MovieViewModel
@@ -34,9 +35,12 @@ class MovieListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.status.observe(viewLifecycleOwner, {
-            binding.textView.text = it
 
+        val adapter= MovieListAdapter()
+        binding.recyclerView.adapter=adapter
+
+        viewModel.status.observe(viewLifecycleOwner, {
+        adapter.submitList(it.items)
         })
     }
 }
