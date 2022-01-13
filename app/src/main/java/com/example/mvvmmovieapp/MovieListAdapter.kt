@@ -1,7 +1,11 @@
 package com.example.mvvmmovieapp
 
+import android.content.ClipData
+import android.content.Intent
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.AdapterView
 import androidx.core.net.toUri
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -9,8 +13,10 @@ import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.example.mvvmmovieapp.databinding.ItemListBinding
 import com.example.mvvmmovieapp.network.MovieList
+import com.example.mvvmmovieapp.ui.MovieListFragment
 
-class MovieListAdapter :
+
+class MovieListAdapter(private val onItemClicked:(MovieList)->Unit) :
     ListAdapter<MovieList, MovieListAdapter.MoviesViewHolder>(DiffCallback) {
 
     class MoviesViewHolder(
@@ -30,6 +36,14 @@ class MovieListAdapter :
 
     override fun onBindViewHolder(holder: MoviesViewHolder, position: Int) {
         val data = getItem(position)
+        // Needed to call startActivity
+
+        holder.itemView.setOnClickListener {
+            onItemClicked(data)
+
+
+
+        }
         holder.bind(data)
     }
 

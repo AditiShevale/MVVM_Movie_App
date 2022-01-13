@@ -5,8 +5,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.LifecycleOwner
+import androidx.navigation.fragment.findNavController
 import com.example.mvvmmovieapp.MovieListAdapter
 import com.example.mvvmmovieapp.R
 import com.example.mvvmmovieapp.databinding.FragmentMovieListBinding
@@ -36,11 +38,15 @@ class MovieListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val adapter= MovieListAdapter()
-        binding.recyclerView.adapter=adapter
+        val adapter = MovieListAdapter {
+            val action = MovieListFragmentDirections.actionMovieListFragmentToMovieDetailFragment(it)
+            findNavController().navigate(action)
+        }
+
+        binding.recyclerView.adapter = adapter
 
         viewModel.status.observe(viewLifecycleOwner, {
-        adapter.submitList(it.items)
+            adapter.submitList(it.items)
         })
     }
 }
