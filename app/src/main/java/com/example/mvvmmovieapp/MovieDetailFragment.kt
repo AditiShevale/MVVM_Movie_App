@@ -1,10 +1,8 @@
 package com.example.mvvmmovieapp
 
 import android.os.Bundle
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
@@ -24,8 +22,7 @@ class MovieDetailFragment : Fragment() {
 
     private var binding: FragmentMovieDetailBinding? = null
 
-    private lateinit var movieData : MovieList
-
+    private lateinit var movieData: MovieList
 
 
     override fun onCreateView(
@@ -47,8 +44,8 @@ class MovieDetailFragment : Fragment() {
         movieData = args.movieData
         binding?.txtDetailsMovie?.text = movieData.title
 
-
-
     }
+
+
 
 }

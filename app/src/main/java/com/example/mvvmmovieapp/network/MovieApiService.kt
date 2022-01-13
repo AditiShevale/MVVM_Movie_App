@@ -19,6 +19,8 @@ private val retrofit = Retrofit.Builder()
 interface MovieApiService {
     @GET("MostPopularMovies/k_b4eqgb92")
     suspend fun getMPopularMovies(): MovieItemList
+    @GET("ComingSoon/k_b4eqgb92")
+    suspend fun getComingSoonMovies(): MovieItemList
 
 }
 

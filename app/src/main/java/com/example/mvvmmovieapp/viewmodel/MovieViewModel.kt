@@ -18,7 +18,7 @@ class MovieViewModel() : ViewModel() {
         getMovieList()
     }
 
-    private fun getMovieList() {
+    fun getMovieList() {
         viewModelScope.launch {
             try {
 
@@ -33,4 +33,17 @@ class MovieViewModel() : ViewModel() {
 
     }
 
+    fun getComingSoonList() {
+        viewModelScope.launch {
+            try {
+
+                val movieItemResult = MoviesApi.retrofitService.getComingSoonMovies()
+                _status.value = movieItemResult
+
+
+            } catch (e: Exception) {
+                //_status.value = "Failure: ${e.message}"
+            }
+        }
+    }
 }
