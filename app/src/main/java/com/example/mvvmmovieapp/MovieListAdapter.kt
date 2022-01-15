@@ -40,9 +40,6 @@ class MovieListAdapter(private val onItemClicked:(MovieList)->Unit) :
 
         holder.itemView.setOnClickListener {
             onItemClicked(data)
-
-
-
         }
         holder.bind(data)
     }

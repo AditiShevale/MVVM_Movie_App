@@ -1,5 +1,7 @@
 package com.example.mvvmmovieapp.ui
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
@@ -16,9 +18,11 @@ import com.example.mvvmmovieapp.viewmodel.MovieViewModel
 class MovieListFragment : Fragment() {
     private val viewModel: MovieViewModel by viewModels()
     lateinit var binding: FragmentMovieListBinding
+    lateinit var sharedPreferences: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        sharedPreferences = activity?.getPreferences(Context.MODE_PRIVATE) ?: return
 
     }
 
@@ -36,6 +40,7 @@ class MovieListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        viewModel.sharedPref(sharedPreferences.getString("key_movie", "mostPopular"))
         val adapter = MovieListAdapter {
             val action =
                 MovieListFragmentDirections.actionMovieListFragmentToMovieDetailFragment(it)
@@ -47,6 +52,7 @@ class MovieListFragment : Fragment() {
         viewModel.status.observe(viewLifecycleOwner, {
             adapter.submitList(it.items)
         })
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -60,10 +66,12 @@ class MovieListFragment : Fragment() {
         return when (item.itemId) {
             R.id.mostPopular -> {
                 viewModel.getMovieList()
+                sharedPreferences.edit().putString("key_movie", "mostPopular").apply()
                 true
             }
             R.id.comingSoon -> {
                 viewModel.getComingSoonList()
+                sharedPreferences.edit().putString("key_movie", "comingSoon").apply()
                 true
             }
             else -> super.onOptionsItemSelected(item)

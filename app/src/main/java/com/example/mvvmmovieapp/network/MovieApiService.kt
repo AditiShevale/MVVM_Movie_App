@@ -6,6 +6,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
 import retrofit2.http.GET
+import retrofit2.http.Path
 
 private const val BASE_URL = "https://imdb-api.com/en/API/"
 private val moshi = Moshi.Builder()
@@ -17,10 +18,15 @@ private val retrofit = Retrofit.Builder()
     .build()
 
 interface MovieApiService {
-    @GET("MostPopularMovies/APIKEY")
+
+    @GET("MostPopularMovies/k_b4eqgb92")
     suspend fun getMPopularMovies(): MovieItemList
-    @GET("ComingSoon/APIKEY")
+
+    @GET("ComingSoon/k_b4eqgb92")
     suspend fun getComingSoonMovies(): MovieItemList
+
+    @GET("Posters/k_b4eqgb92/{id}")
+    suspend fun getPoster(@Path("id") id: String): MovieBackDropList
 
 }
 

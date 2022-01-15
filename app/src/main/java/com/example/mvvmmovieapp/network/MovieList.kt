@@ -8,7 +8,7 @@ data class MovieList(
     val title: String,
     val year: String,
     val image: String
-) : Parcelable{
+) : Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readString().toString(),
         parcel.readString().toString(),
@@ -39,9 +39,16 @@ data class MovieList(
     }
 
 }
-
-
-
 data class MovieItemList(
     val items: List<MovieList>
+)
+
+data class MovieBackDrop(
+    val id: String,
+    val link: String
+)
+
+data class MovieBackDropList(
+
+    val backdrops: List<MovieBackDrop>
 )
