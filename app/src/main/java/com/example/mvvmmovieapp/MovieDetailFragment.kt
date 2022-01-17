@@ -14,6 +14,7 @@ import com.example.mvvmmovieapp.databinding.FragmentMovieListBinding
 import com.example.mvvmmovieapp.network.MovieBackDropList
 import com.example.mvvmmovieapp.network.MovieList
 import com.example.mvvmmovieapp.viewmodel.MovieViewModel
+import com.example.mvvmmovieapp.viewmodel.MovieViewModelFactory
 
 /**
  * A simple [Fragment] subclass.
@@ -28,8 +29,11 @@ class MovieDetailFragment : Fragment() {
 
     private lateinit var movieData: MovieList
 
-    private val viewModel: MovieViewModel by viewModels()
-
+    private val viewModel: MovieViewModel by  activityViewModels {
+        MovieViewModelFactory(
+            (activity?.application as MovieApplication).database.movieDao()
+        )
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,11 +41,9 @@ class MovieDetailFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         binding = FragmentMovieDetailBinding.inflate(inflater, container, false)
-
         binding?.lifecycleOwner = this
 
         // Inflate the layout for this fragment
-
         return binding?.root
     }
 
@@ -50,14 +52,17 @@ class MovieDetailFragment : Fragment() {
         movieData = args.movieData
         viewModel.getImageBackDrop(movieData.id)
         viewModel.poster_status.observe(viewLifecycleOwner, {
-
             val backdropUri = it.backdrops.random()
                 .link.toUri().buildUpon().scheme("https").build()
             binding?.imgBackDrop?.load(backdropUri)
-
-
         })
-    }
+        binding?.btnFav?.setOnClickListener {
+            viewModel.InsertFav(movieData)
 
+        }
+        binding?.btnDelete?.setOnClickListener {
+            viewModel.DeleteFav(movieData)
+        }
+    }
 
 }

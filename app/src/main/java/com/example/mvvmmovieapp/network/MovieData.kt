@@ -2,16 +2,19 @@ package com.example.mvvmmovieapp.network
 
 import android.os.Parcel
 import android.os.Parcelable
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 
+@Entity(tableName = "movie")
 data class MovieList(
+    @PrimaryKey()
     val id: String,
-    val title: String,
-    val year: String,
+
+    @ColumnInfo(name = "img_url")
     val image: String
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
-        parcel.readString().toString(),
-        parcel.readString().toString(),
         parcel.readString().toString(),
         parcel.readString().toString()
     ) {
@@ -19,8 +22,6 @@ data class MovieList(
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(id)
-        parcel.writeString(title)
-        parcel.writeString(year)
         parcel.writeString(image)
     }
 
@@ -39,6 +40,7 @@ data class MovieList(
     }
 
 }
+
 data class MovieItemList(
     val items: List<MovieList>
 )
@@ -49,6 +51,5 @@ data class MovieBackDrop(
 )
 
 data class MovieBackDropList(
-
     val backdrops: List<MovieBackDrop>
 )

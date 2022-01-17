@@ -1,14 +1,13 @@
 package com.example.mvvmmovieapp.viewmodel
 
 import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
+import com.example.mvvmmovieapp.database.MovieDao
 import com.example.mvvmmovieapp.network.*
 import kotlinx.coroutines.launch
+import java.lang.IllegalArgumentException
 
-class MovieViewModel() : ViewModel() {
+class MovieViewModel(private val movieDao: MovieDao) : ViewModel() {
     private val _status = MutableLiveData<MovieItemList>()
     val status: LiveData<MovieItemList> = _status
 
@@ -20,6 +19,7 @@ class MovieViewModel() : ViewModel() {
         when (data) {
             "mostPopular" -> getMovieList()
             "comingSoon" -> getComingSoonList()
+            "favorite" -> getfavMovieList()
         }
     }
 
@@ -53,6 +53,13 @@ class MovieViewModel() : ViewModel() {
         }
     }
 
+    fun getfavMovieList() {
+        viewModelScope.launch {
+            val movieData = MovieItemList(movieDao.getAllMovieList())
+            _status.value = movieData
+        }
+    }
+
     fun getImageBackDrop(id: String) {
         viewModelScope.launch {
             try {
@@ -65,6 +72,29 @@ class MovieViewModel() : ViewModel() {
                 Log.d("xgxxx", e.message.toString())
             }
         }
+    }
+
+    fun InsertFav(favMovieList: MovieList) {
+        viewModelScope.launch {
+            movieDao.insert(favMovieList)
+        }
+    }
+
+    fun DeleteFav(deleteMovieList: MovieList) {
+
+        viewModelScope.launch {
+            movieDao.delete(deleteMovieList)
+        }
+    }
+}
+
+class MovieViewModelFactory(private val movieDao: MovieDao) : ViewModelProvider.Factory {
+    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+        if (modelClass.isAssignableFrom(MovieViewModel::class.java)) {
+            @Suppress("UNCHECKED_CAST")
+            return MovieViewModel(movieDao) as T
+        }
+        throw IllegalArgumentException("Unknown ViewModel class")
     }
 
 }

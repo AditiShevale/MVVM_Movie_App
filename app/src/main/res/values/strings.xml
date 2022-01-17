@@ -1,7 +1,9 @@
 <resources>
     <string name="app_name">MVVM Movie App</string>
-    <!-- TODO: Remove or change this placeholder text -->
+
     <string name="hello_blank_fragment">Blank Fragment</string>
-    <string name="mostpopular">Most Popular</string>
-    <string name="comingsoon">Coming Soon</string>
+    <string name="mostPopular">Most Popular</string>
+    <string name="comingSoon">Coming Soon</string>
+    <string name="favorite">Favorite</string>
+
 </resources>
