@@ -45,7 +45,6 @@ data class MovieList(
             return arrayOfNulls(size)
         }
     }
-
 }
 
 data class MovieItemList(

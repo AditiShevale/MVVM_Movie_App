@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.Flow
 interface MovieDao {
 
     @Query("SELECT * from movie")
- suspend fun getAllMovieList():List<MovieList>
+    suspend fun getAllMovieList(): List<MovieList>
 
     @Insert(onConflict = REPLACE)
     suspend fun insert(item: MovieList)

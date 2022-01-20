@@ -1,5 +1,6 @@
 package com.example.mvvmmovieapp.ui
 
+import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
@@ -19,9 +20,11 @@ import com.example.mvvmmovieapp.viewmodel.MovieViewModelFactory
 
 
 class MovieListFragment : Fragment() {
+
     private val viewModel: MovieViewModel by activityViewModels {
         MovieViewModelFactory(
-            (activity?.application as MovieApplication).database.movieDao()
+            (activity?.application as MovieApplication).database.movieDao(),
+            activity?.application as Application
         )
     }
     lateinit var binding: FragmentMovieListBinding
@@ -59,13 +62,12 @@ class MovieListFragment : Fragment() {
         viewModel.status.observe(viewLifecycleOwner, {
             adapter.submitList(it.items)
         })
+        viewModel.movieReminder()
 
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-
         inflater.inflate(R.menu.menu, menu)
-
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -83,7 +85,7 @@ class MovieListFragment : Fragment() {
             }
             R.id.favorite -> {
                 viewModel.getfavMovieList()
-                sharedPreferences.edit().putString("key_movie","favorite").apply()
+                sharedPreferences.edit().putString("key_movie", "favorite").apply()
                 true
             }
 

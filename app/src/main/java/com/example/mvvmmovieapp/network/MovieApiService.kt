@@ -27,7 +27,6 @@ interface MovieApiService {
 
     @GET("Posters/k_b4eqgb92/{id}")
     suspend fun getPoster(@Path("id") id: String): MovieBackDropList
-
 }
 
 object MoviesApi {

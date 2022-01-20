@@ -26,7 +26,6 @@ class MovieListAdapter(private val onItemClicked: (MovieList) -> Unit) :
         fun bind(movielist: MovieList) {
             val imguri = movielist.image.toUri().buildUpon().scheme("https").build()
             binding.imgMovie.load(imguri)
-
             binding.txtMovieName.text = movielist.title
         }
 

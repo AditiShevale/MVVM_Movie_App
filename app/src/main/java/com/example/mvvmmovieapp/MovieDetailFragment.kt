@@ -1,5 +1,6 @@
 package com.example.mvvmmovieapp
 
+import android.app.Application
 import android.os.Bundle
 import android.view.*
 import android.widget.Toast
@@ -29,9 +30,10 @@ class MovieDetailFragment : Fragment() {
 
     private lateinit var movieData: MovieList
 
-    private val viewModel: MovieViewModel by  activityViewModels {
+    private val viewModel: MovieViewModel by activityViewModels {
         MovieViewModelFactory(
-            (activity?.application as MovieApplication).database.movieDao()
+            (activity?.application as MovieApplication).database.movieDao(),
+            activity?.application as Application
         )
     }
 
@@ -63,6 +65,7 @@ class MovieDetailFragment : Fragment() {
         binding?.btnDelete?.setOnClickListener {
             viewModel.DeleteFav(movieData)
         }
+        viewModel.movieReminder()
     }
 
 }
