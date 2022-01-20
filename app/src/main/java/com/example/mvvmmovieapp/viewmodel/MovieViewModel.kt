@@ -6,14 +6,17 @@ import androidx.lifecycle.*
 import androidx.work.ExistingWorkPolicy
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
+import com.example.mvvmmovieapp.R
 import com.example.mvvmmovieapp.database.MovieDao
 import com.example.mvvmmovieapp.network.*
+import com.example.mvvmmovieapp.repository.MovieRepository
 import com.example.mvvmmovieapp.workers.movieWorker
 import kotlinx.coroutines.launch
 import java.lang.IllegalArgumentException
 import java.util.concurrent.TimeUnit
 
-class MovieViewModel(private val movieDao: MovieDao, application: Application) : ViewModel() {
+class MovieViewModel(private val repository: MovieRepository, application: Application) :
+    ViewModel() {
 
     private val _status = MutableLiveData<MovieItemList>()
     val status: LiveData<MovieItemList> = _status
@@ -65,8 +68,7 @@ class MovieViewModel(private val movieDao: MovieDao, application: Application) :
 
     fun getfavMovieList() {
         viewModelScope.launch {
-            val movieData = MovieItemList(movieDao.getAllMovieList())
-            _status.value = movieData
+            _status.value = repository.getfavMovieList()
         }
     }
 
@@ -86,23 +88,26 @@ class MovieViewModel(private val movieDao: MovieDao, application: Application) :
 
     fun InsertFav(favMovieList: MovieList) {
         viewModelScope.launch {
-            movieDao.insert(favMovieList)
+            repository.InsertFav(favMovieList)
         }
     }
 
     fun DeleteFav(deleteMovieList: MovieList) {
         viewModelScope.launch {
-            movieDao.delete(deleteMovieList)
+            repository.DeleteFav(deleteMovieList)
         }
     }
 }
 
-class MovieViewModelFactory(private val movieDao: MovieDao, private val application: Application) :
+class MovieViewModelFactory(
+    private val repository: MovieRepository,
+    private val application: Application
+) :
     ViewModelProvider.Factory {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(MovieViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")
-            return MovieViewModel(movieDao, application) as T
+            return MovieViewModel(repository, application) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }

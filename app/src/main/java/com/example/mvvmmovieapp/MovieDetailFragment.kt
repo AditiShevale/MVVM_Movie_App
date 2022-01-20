@@ -32,7 +32,7 @@ class MovieDetailFragment : Fragment() {
 
     private val viewModel: MovieViewModel by activityViewModels {
         MovieViewModelFactory(
-            (activity?.application as MovieApplication).database.movieDao(),
+            (activity?.application as MovieApplication).repository,
             activity?.application as Application
         )
     }
