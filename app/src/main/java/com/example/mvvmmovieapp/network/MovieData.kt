@@ -10,18 +10,25 @@ import androidx.room.PrimaryKey
 data class MovieList(
     @PrimaryKey()
     val id: String,
+    @ColumnInfo(name = "title")
+    val title :String,
 
     @ColumnInfo(name = "img_url")
     val image: String
+
+
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readString().toString(),
+        parcel.readString().toString(),
         parcel.readString().toString()
+
     ) {
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(id)
+        parcel.writeString(title)
         parcel.writeString(image)
     }
 
