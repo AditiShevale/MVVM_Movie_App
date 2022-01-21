@@ -1,14 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/action_switch_layout"
+        android:icon="@drawable/ic_linear_layout"
+        android:title="@string/action_switch_layout"
+        app:showAsAction="always">
+        <menu>
+            <item
+                android:id="@+id/mostPopular"
 
-    <item android:id="@+id/mostPopular"
-        android:title="@string/mostPopular"
-        />
-    <item android:id="@+id/comingSoon"
-        android:title="@string/comingSoon"
-        />
-    <item android:id="@+id/favorite"
-        android:title="@string/favorite"
-        />
-
+                android:title="@string/mostPopular" />
+            <item
+                android:id="@+id/comingSoon"
+                android:title="@string/comingSoon" />
+            <item
+                android:id="@+id/favorite"
+                android:title="@string/favorite" />
+        </menu>
+    </item>
 </menu>
+
