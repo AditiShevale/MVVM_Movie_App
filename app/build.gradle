@@ -81,4 +81,6 @@ dependencies {
     // WorkManager dependency
     implementation "androidx.work:work-runtime-ktx:2.7.1"
 
+    implementation 'com.google.android.material:material:<version>'
+
 }
