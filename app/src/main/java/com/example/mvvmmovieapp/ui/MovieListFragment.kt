@@ -2,6 +2,7 @@ package com.example.mvvmmovieapp.ui
 
 import android.app.Application
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.*
@@ -17,6 +18,12 @@ import com.example.mvvmmovieapp.R
 import com.example.mvvmmovieapp.databinding.FragmentMovieListBinding
 import com.example.mvvmmovieapp.viewmodel.MovieViewModel
 import com.example.mvvmmovieapp.viewmodel.MovieViewModelFactory
+import com.example.mvvmmovieapp.SettingsActivity
+
+import com.example.mvvmmovieapp.MainActivity
+
+
+
 
 
 class MovieListFragment : Fragment() {
@@ -86,6 +93,15 @@ class MovieListFragment : Fragment() {
             R.id.favorite -> {
                 viewModel.getfavMovieList()
                 sharedPreferences.edit().putString("key_movie", "favorite").apply()
+                true
+            }
+            R.id.settings -> {
+                val id = item.itemId
+                if (id == R.id.settings) {
+                    val intent = Intent(context, SettingsActivity::class.java)
+                    startActivity(intent)
+                    return true
+                }
                 true
             }
 

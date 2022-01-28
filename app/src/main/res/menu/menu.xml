@@ -9,7 +9,6 @@
         <menu>
             <item
                 android:id="@+id/mostPopular"
-
                 android:title="@string/mostPopular" />
             <item
                 android:id="@+id/comingSoon"
@@ -17,6 +16,9 @@
             <item
                 android:id="@+id/favorite"
                 android:title="@string/favorite" />
+            <item
+                android:id="@+id/settings"
+                android:title="@string/settings" />
         </menu>
     </item>
 </menu>
