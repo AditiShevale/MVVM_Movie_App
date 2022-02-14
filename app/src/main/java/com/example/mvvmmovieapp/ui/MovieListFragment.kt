@@ -7,10 +7,7 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
-import android.widget.Toast
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.LifecycleOwner
 import androidx.navigation.fragment.findNavController
 import com.example.mvvmmovieapp.MovieApplication
 import com.example.mvvmmovieapp.MovieListAdapter
@@ -19,12 +16,6 @@ import com.example.mvvmmovieapp.databinding.FragmentMovieListBinding
 import com.example.mvvmmovieapp.viewmodel.MovieViewModel
 import com.example.mvvmmovieapp.viewmodel.MovieViewModelFactory
 import com.example.mvvmmovieapp.SettingsActivity
-
-import com.example.mvvmmovieapp.MainActivity
-
-
-
-
 
 class MovieListFragment : Fragment() {
 
@@ -46,7 +37,7 @@ class MovieListFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentMovieListBinding.inflate(inflater)
         binding.lifecycleOwner = this
         setHasOptionsMenu(true)
@@ -66,10 +57,11 @@ class MovieListFragment : Fragment() {
 
         binding.recyclerView.adapter = adapter
 
-        viewModel.status.observe(viewLifecycleOwner, {
+        viewModel.status.observe(viewLifecycleOwner) {
             adapter.submitList(it.items)
-        })
+        }
         viewModel.movieReminder()
+
 
     }
 
@@ -91,7 +83,7 @@ class MovieListFragment : Fragment() {
                 true
             }
             R.id.favorite -> {
-                viewModel.getfavMovieList()
+                viewModel.getFavMovieList()
                 sharedPreferences.edit().putString("key_movie", "favorite").apply()
                 true
             }

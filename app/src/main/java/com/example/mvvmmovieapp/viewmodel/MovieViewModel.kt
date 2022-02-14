@@ -6,11 +6,10 @@ import androidx.lifecycle.*
 import androidx.work.ExistingWorkPolicy
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
-import com.example.mvvmmovieapp.R
-import com.example.mvvmmovieapp.database.MovieDao
 import com.example.mvvmmovieapp.network.*
 import com.example.mvvmmovieapp.repository.MovieRepository
 import com.example.mvvmmovieapp.workers.movieWorker
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import java.lang.IllegalArgumentException
 import java.util.concurrent.TimeUnit
@@ -24,12 +23,16 @@ class MovieViewModel(private val repository: MovieRepository, application: Appli
     private val _poster_status = MutableLiveData<MovieBackDropList>()
     val poster_status: LiveData<MovieBackDropList> = _poster_status
 
+    private val _detailData_status = MutableLiveData<MovieFullData>()
+    val detailData_status: LiveData<MovieFullData> = _detailData_status
+
     private val workManager = WorkManager.getInstance(application)
 
     internal fun movieReminder() {
 
         val movieNotification = OneTimeWorkRequestBuilder<movieWorker>()
             .setInitialDelay(10, TimeUnit.SECONDS)
+
             .build()
 
         workManager.beginUniqueWork("movies", ExistingWorkPolicy.REPLACE, movieNotification)
@@ -40,7 +43,7 @@ class MovieViewModel(private val repository: MovieRepository, application: Appli
         when (data) {
             "mostPopular" -> getMovieList()
             "comingSoon" -> getComingSoonList()
-            "favorite" -> getfavMovieList()
+            "favorite" -> getFavMovieList()
         }
     }
 
@@ -66,9 +69,9 @@ class MovieViewModel(private val repository: MovieRepository, application: Appli
         }
     }
 
-    fun getfavMovieList() {
+    fun getFavMovieList() {
         viewModelScope.launch {
-            _status.value = repository.getfavMovieList()
+            _status.value = repository.getFavMovieList()
         }
     }
 
@@ -86,17 +89,33 @@ class MovieViewModel(private val repository: MovieRepository, application: Appli
         }
     }
 
-    fun InsertFav(favMovieList: MovieList) {
+    fun insertFav(favMovieList: MovieList) {
         viewModelScope.launch {
-            repository.InsertFav(favMovieList)
+            repository.insertFav(favMovieList)
         }
     }
 
-    fun DeleteFav(deleteMovieList: MovieList) {
+    fun deleteFav(deleteMovieList: MovieList) {
         viewModelScope.launch {
-            repository.DeleteFav(deleteMovieList)
+            repository.deleteFav(deleteMovieList)
         }
     }
+
+    fun detailData() {
+        viewModelScope.launch {
+            try {
+                val movieDetailResult = MoviesApi.retrofitService.getDetailListTitle()
+//                Log.d("qxqxqx", movieDetailResult.toString())
+                _detailData_status.value = movieDetailResult
+
+            } catch (e: java.lang.Exception) {
+                Log.d("qxqxqx", e.message.toString())
+            }
+
+
+        }
+    }
+
 }
 
 class MovieViewModelFactory(

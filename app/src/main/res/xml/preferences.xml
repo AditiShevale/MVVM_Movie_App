@@ -7,9 +7,6 @@
         android:key="switch"
         android:title="Settings option"
         android:summary="@string/settings_text"/>
-    <Preference
-        app:key="@string/pref_key_night"
-        app:summary="@string/pref_night_summary"
-        app:title="@string/pref_night_title" />
+
 
 </PreferenceScreen>

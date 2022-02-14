@@ -3,16 +3,13 @@ package com.example.mvvmmovieapp
 import android.app.Application
 import android.os.Bundle
 import android.view.*
-import android.widget.Toast
 import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import coil.load
 import com.example.mvvmmovieapp.databinding.FragmentMovieDetailBinding
-import com.example.mvvmmovieapp.databinding.FragmentMovieListBinding
-import com.example.mvvmmovieapp.network.MovieBackDropList
+import com.example.mvvmmovieapp.network.MovieFullData
 import com.example.mvvmmovieapp.network.MovieList
 import com.example.mvvmmovieapp.viewmodel.MovieViewModel
 import com.example.mvvmmovieapp.viewmodel.MovieViewModelFactory
@@ -29,6 +26,8 @@ class MovieDetailFragment : Fragment() {
     private var binding: FragmentMovieDetailBinding? = null
 
     private lateinit var movieData: MovieList
+
+
 
     private val viewModel: MovieViewModel by activityViewModels {
         MovieViewModelFactory(
@@ -52,20 +51,30 @@ class MovieDetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         movieData = args.movieData
+
         viewModel.getImageBackDrop(movieData.id)
-        viewModel.poster_status.observe(viewLifecycleOwner, {
+        viewModel.poster_status.observe(viewLifecycleOwner) {
             val backdropUri = it.backdrops.random()
                 .link.toUri().buildUpon().scheme("https").build()
             binding?.imgBackDrop?.load(backdropUri)
-        })
+        }
         binding?.btnFav?.setOnClickListener {
-            viewModel.InsertFav(movieData)
+            viewModel.insertFav(movieData)
 
         }
         binding?.btnDelete?.setOnClickListener {
-            viewModel.DeleteFav(movieData)
+            viewModel.deleteFav(movieData)
         }
         viewModel.movieReminder()
+        viewModel.detailData()
+
+        viewModel.detailData_status.observe(viewLifecycleOwner) {
+            binding?.txtRating?.text = it.imDbRating
+            binding?.txtPlot?.text = it.plot
+            binding?.txtCrew?.text = it.actorList[0].name
+        }
+
+
     }
 
 }

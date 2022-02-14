@@ -10,11 +10,14 @@ import androidx.room.PrimaryKey
 data class MovieList(
     @PrimaryKey()
     val id: String,
+
     @ColumnInfo(name = "title")
-    val title :String,
+    val title: String,
 
     @ColumnInfo(name = "img_url")
-    val image: String
+    val image: String,
+
+
 
 
 ) : Parcelable {
@@ -22,14 +25,13 @@ data class MovieList(
         parcel.readString().toString(),
         parcel.readString().toString(),
         parcel.readString().toString()
-
-    ) {
-    }
+    )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(id)
         parcel.writeString(title)
         parcel.writeString(image)
+
     }
 
     override fun describeContents(): Int {
@@ -59,3 +61,15 @@ data class MovieBackDrop(
 data class MovieBackDropList(
     val backdrops: List<MovieBackDrop>
 )
+
+                                        //DetailScreen Data
+data class MovieFullData(
+    val releaseDate: String,
+    val plot: String,
+    val runtimeStr: String,
+    val imDbRating:String,
+    val genres:String,
+    val actorList: List<MovieCastData>
+)
+
+data class MovieCastData(val image: String, val name: String, val asCharacter: String)

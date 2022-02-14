@@ -8,16 +8,16 @@ import kotlinx.coroutines.launch
 
 class MovieRepository(private val movieDao: MovieDao) {
 
-    suspend fun InsertFav(favMovieList: MovieList) {
+    suspend fun insertFav(favMovieList: MovieList) {
         movieDao.insert(favMovieList)
 
     }
 
-    suspend fun DeleteFav(deleteMovieList: MovieList) {
+    suspend fun deleteFav(deleteMovieList: MovieList) {
         movieDao.delete(deleteMovieList)
     }
 
-    suspend fun getfavMovieList(): MovieItemList {
+    suspend fun getFavMovieList(): MovieItemList {
         return MovieItemList(movieDao.getAllMovieList())
     }
 }
